@@ -1,0 +1,24 @@
+name: frontbooks
+description: "Project about a inventory and lending book system"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.2.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.0
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  assets:
+    - assets/background/book_logo.png
+    
+  uses-material-design: true
