@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 3)),
+        future: Future.delayed(const Duration(seconds: 2)),
         builder: (context, snapshot) {
           // Si el Future ha terminado (completado), muestra la pantalla de bienvenida
           if (snapshot.connectionState == ConnectionState.done) {
