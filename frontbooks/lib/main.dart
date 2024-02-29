@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/presentation/screens/log_in_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
-import 'package:frontbooks/presentation/screens/welcome_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,12 +19,11 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FutureBuilder(
-        // Simula una carga inicial que podría tomar tiempo (p. ej. una verificación de inicio de sesión)
         future: Future.delayed(const Duration(seconds: 3)),
         builder: (context, snapshot) {
           // Si el Future ha terminado (completado), muestra la pantalla de bienvenida
           if (snapshot.connectionState == ConnectionState.done) {
-            return const WelcomeScreen();
+            return const LogInScreen();
           }
           // Mientras se carga el Future, muestra el splash screen
           return const SplashScreen();
@@ -35,10 +34,17 @@ class MainApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final double imageSize = screenSize.width > screenSize.height
+        ? screenSize.height * 0.4
+        : screenSize.width * 0.7;
+    final double headingFontSize = screenSize.width > 600 ? 48 : 32;
+    final double loadingFontSize = screenSize.width > 600 ? 16 : 12;
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -46,28 +52,23 @@ class SplashScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Ajustando el tamaño de la imagen según el tamaño de la pantalla
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final imageSize = constraints.maxWidth * 0.75;
-                return Image.asset(
-                  'assets/background/book_logo.png',
-                  width: imageSize,
-                );
-              },
+            Image.asset(
+              'assets/background/book_logo.png',
+              width: imageSize,
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Bienvenido',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 48,
+                fontSize: headingFontSize,
               ),
             ),
-            const SizedBox(height: 8), // Espacio entre los textos
-            const Text(
+            const SizedBox(height: 8),
+            Text(
               'Cargando...',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: loadingFontSize,
               ),
             ),
           ],
