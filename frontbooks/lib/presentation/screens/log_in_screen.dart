@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/presentation/screens/author_Screen.dart';
+import 'package:frontbooks/presentation/screens/book_Screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:frontbooks/utils/validators.dart';
@@ -135,7 +137,7 @@ class _LogInScreenState extends State<LogInScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const LoanScreen(),
+                            builder: (context) => const BookScreen(),
                           ),
                         );
                       },

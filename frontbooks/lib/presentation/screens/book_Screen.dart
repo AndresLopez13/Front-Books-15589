@@ -2,51 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:intl/intl.dart';
 
-class LoanScreen extends StatefulWidget {
-  const LoanScreen({Key? key}) : super(key: key);
+class BookScreen extends StatefulWidget {
+  const BookScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoanScreen> createState() => _LoanScreenState();
+  State<BookScreen> createState() => _BookScreenState();
 }
 
-class _LoanScreenState extends State<LoanScreen> {
+class _BookScreenState extends State<BookScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _startDateController = TextEditingController();
-  final _endDateController = TextEditingController();
-
-  String _selectedStudent = 'Ismael Cedillo';
-  String _selectedBook = 'Habitos atómicos';
-
-  final List<String> _students = [
-    'Ismael Cedillo',
-    'Andrés López',
-    'Adrian Iza',
-  ];
-
-  final List<String> _books = [
-    'El sutil arte de que te importe un carajo',
-    'Habitos atómicos',
-    'Make time',
-  ];
+  final _nameController = TextEditingController();
+  final _editorialController = TextEditingController();
+  final _dateController = TextEditingController();
 
   @override
   void dispose() {
-    _startDateController.dispose();
-    _endDateController.dispose();
+    _nameController.dispose();
+    _editorialController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final double inputFontSize = screenSize.width > 600 ? 16 : 12;
+    //final double inputFontSize = screenSize.width > 600 ? 16 : 12;
     final double buttonFontSize = screenSize.width > 600 ? 18 : 14;
     final double horizontalPadding = screenSize.width > 600 ? 400 : 16;
-    //final double verticalPadding = screenSize.width > 600 ? 32 : 8;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nuevo Préstamo'),
+        title: const Text('Nuevo Libro'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -55,95 +41,22 @@ class _LoanScreenState extends State<LoanScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Estudiante',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: inputFontSize,
-                ),
-              ),
-              DropdownButtonFormField<String>(
-                value: _selectedStudent,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedStudent = value!;
-                  });
-                },
-                items: _students.map((student) {
-                  return DropdownMenuItem<String>(
-                    value: student,
-                    child: Text(student),
-                  );
-                }).toList(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, selecciona un estudiante';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
               const Text(
-                'Libro',
+                'Nombre del Libro',
                 style: TextStyle(
-                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              DropdownButtonFormField<String>(
-                value: _selectedBook,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedBook = value!;
-                  });
-                },
-                items: _books.map((book) {
-                  return DropdownMenuItem<String>(
-                    value: book,
-                    child: Text(book),
-                  );
-                }).toList(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, selecciona un libro';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              const Text(
-                'Fecha Inicio Préstamo',
-                style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
               TextFormField(
-                controller: _startDateController,
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
-                  );
-
-                  if (pickedDate != null) {
-                    setState(() {
-                      _startDateController.text =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
-                    });
-                  }
-                },
+                controller: _nameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, selecciona una fecha';
+                    return 'Por favor, ingresa el nombre del libro';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  suffixIcon: const Icon(Icons.calendar_today),
                   border: const OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -151,26 +64,48 @@ class _LoanScreenState extends State<LoanScreen> {
               ),
               const SizedBox(height: 16.0),
               const Text(
-                'Fecha Fin Préstamo',
+                'Editorial',
                 style: TextStyle(
-                  fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
               TextFormField(
-                controller: _endDateController,
+                controller: _editorialController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, ingresa la editorial del libro';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: horizontalPadding),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              const Text(
+                'Fecha de Publicación',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              TextFormField(
+                controller: _dateController,
                 readOnly: true,
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2000),
-                    lastDate: DateTime(2101),
+                    lastDate: DateTime.now(),
                   );
 
                   if (pickedDate != null) {
                     setState(() {
-                      _endDateController.text =
+                      _dateController.text =
                           DateFormat('yyyy-MM-dd').format(pickedDate);
                     });
                   }
@@ -184,7 +119,6 @@ class _LoanScreenState extends State<LoanScreen> {
                 decoration: InputDecoration(
                   suffixIcon: const Icon(Icons.calendar_today),
                   border: const OutlineInputBorder(),
-                  fillColor: AppColors.primaryColor,
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: horizontalPadding),
                 ),
@@ -192,12 +126,7 @@ class _LoanScreenState extends State<LoanScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const LoanScreen(),
-                  //   ),
-                  // );
+                  // Lógica para registrar el libro
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: AppColors.whiteColor,
@@ -210,7 +139,7 @@ class _LoanScreenState extends State<LoanScreen> {
                   height: 52,
                   child: Center(
                     child: Text(
-                      'REGISTRAR PRÉSTAMO',
+                      'REGISTRAR LIBRO',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: buttonFontSize,
