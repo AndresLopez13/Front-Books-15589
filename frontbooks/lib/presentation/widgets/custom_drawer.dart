@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/book_screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/presentation/screens/log_in_screen.dart';
+import 'package:frontbooks/utils/colors.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatelessWidget { //SIDEBAR
   const CustomDrawer({
     super.key,
   });
@@ -29,7 +30,7 @@ class OptionsDrawer extends StatelessWidget {
       children: <Widget>[
         const DrawerHeader(
           decoration: BoxDecoration(
-            color: Color(0XFF305252),
+            color: AppColors.primaryColor,
           ),
           child: Text(
             'Menú Principal Libros',
@@ -42,7 +43,7 @@ class OptionsDrawer extends StatelessWidget {
         ListTile(
           title: const Row(
             children: [
-              Icon(Icons.home,
+              Icon(Icons.library_books,
                   color: Colors
                       .black54), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
@@ -64,7 +65,7 @@ class OptionsDrawer extends StatelessWidget {
         ListTile(
           title: const Row(
             children: [
-              Icon(Icons.trending_up,
+              Icon(Icons.account_balance,
                   color: Colors
                       .black54), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
@@ -90,7 +91,7 @@ class OptionsDrawer extends StatelessWidget {
                   color: Colors
                       .black54), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
-              Text("Historial",
+              Text("Historial Préstamos",
                   style: TextStyle(
                       color: Colors
                           .black54)), // Cambia el color del texto según tu preferencia

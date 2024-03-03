@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 
 class LoanScreen extends StatefulWidget {
   const LoanScreen({Key? key}) : super(key: key);
@@ -44,10 +45,8 @@ class _LoanScreenState extends State<LoanScreen> {
     final double horizontalPadding = screenSize.width > 600 ? 400 : 16;
     //final double verticalPadding = screenSize.width > 600 ? 32 : 8;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nuevo Préstamo'),
-      ),
+    return CustomScaffold(
+      title: 'Nuevo Préstamo',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -112,7 +111,7 @@ class _LoanScreenState extends State<LoanScreen> {
               ),
               const SizedBox(height: 16.0),
               const Text(
-                'Fecha Inicio Préstamo',
+                'Fecha Préstamo',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -151,7 +150,7 @@ class _LoanScreenState extends State<LoanScreen> {
               ),
               const SizedBox(height: 16.0),
               const Text(
-                'Fecha Fin Préstamo',
+                'Fecha Devolución',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 class AuthorScreen extends StatefulWidget {
@@ -25,10 +26,8 @@ class _AuthorScreenState extends State<AuthorScreen> {
     final double buttonFontSize = screenSize.width > 600 ? 18 : 14;
     final double horizontalPadding = screenSize.width > 600 ? 400 : 16;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nuevo Autor'),
-      ),
+    return CustomScaffold(
+      title: 'Registrar Autor',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
