@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontbooks/presentation/screens/author_screen.dart';
-import 'package:frontbooks/presentation/screens/book_screen.dart';
-import 'package:frontbooks/presentation/screens/home_page.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:frontbooks/utils/validators.dart';
@@ -46,7 +43,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Form(
                     key: _formKey,
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -75,7 +72,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   'CORREO ELECTRÓNICO',
                                   style: TextStyle(
                                     fontSize: 10,
@@ -90,7 +87,8 @@ class _LogInScreenState extends State<LogInScreen> {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter your email';
                                       }
-                                      if (!isValidEmail(_emailController.text)) {
+                                      if (!isValidEmail(
+                                          _emailController.text)) {
                                         return 'Please enter a valid email';
                                       }
                                       return null;
@@ -113,7 +111,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
+                                const Text(
                                   'CONTRASEÑA',
                                   style: TextStyle(
                                     fontSize: 10,
@@ -140,7 +138,8 @@ class _LogInScreenState extends State<LogInScreen> {
                                       suffixIcon: IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _obscurePassword = !_obscurePassword;
+                                            _obscurePassword =
+                                                !_obscurePassword;
                                           });
                                         },
                                         icon: Icon(
@@ -166,7 +165,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => HomePage(),
+                                      builder: (context) => const LoanScreen(),
                                     ),
                                   );
                                 },
@@ -185,23 +184,23 @@ class _LogInScreenState extends State<LogInScreen> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: buttonFontSize,
+                                      ),
                                     ),
-                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
-          );
-         },
-        ),
-      ),  
+      ),
     );
   }
 }

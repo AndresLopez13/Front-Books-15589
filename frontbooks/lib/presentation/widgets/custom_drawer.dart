@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/book_screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/presentation/screens/log_in_screen.dart';
+import 'package:frontbooks/presentation/screens/view_loans.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 class CustomDrawer extends StatelessWidget { //SIDEBAR
@@ -98,7 +99,12 @@ class OptionsDrawer extends StatelessWidget {
             ],
           ),
           onTap: () {
-            // Acción a realizar cuando se presiona el elemento 2 del Drawer
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ViewLoansScreen(),
+              ),
+            );
           },
         ),
         const Divider(),
