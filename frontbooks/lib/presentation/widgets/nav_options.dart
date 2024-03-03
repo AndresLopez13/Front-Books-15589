@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/book_screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/presentation/screens/view_loans.dart';
+import 'package:frontbooks/utils/colors.dart';
 
 class NavOptions extends StatelessWidget {
   //NAVBAR
@@ -37,12 +38,12 @@ class NavOptions extends StatelessWidget {
           child: const Row(
             children: [
               Icon(Icons.library_books,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors
+                      .whiteColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text(
                 "Libros",
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: AppColors.whiteColor),
               ), // Cambia el color del texto según tu preferencia
             ],
           ),
@@ -64,13 +65,13 @@ class NavOptions extends StatelessWidget {
           child: const Row(
             children: [
               Icon(Icons.account_balance,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors
+                      .whiteColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text(
                 "Préstamos",
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: AppColors.whiteColor),
               ), // Cambia el color del texto según tu preferencia
             ],
           ),
@@ -91,12 +92,12 @@ class NavOptions extends StatelessWidget {
           child: const Row(
             children: [
               Icon(Icons.history,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors
+                      .whiteColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text(
                 "Historial",
-                style: TextStyle(color: Colors.black54),
+                style: TextStyle(color: AppColors.whiteColor),
               ), // Cambia el color del texto según tu preferencia
             ],
           ),

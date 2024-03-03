@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/log_in_screen.dart';
+import 'package:frontbooks/utils/colors.dart';
 import 'nav_options.dart';
 
 class NavBar extends StatelessWidget implements PreferredSizeWidget {
@@ -15,15 +16,15 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       // automaticallyImplyLeading: false,
+      backgroundColor: AppColors.primaryColor,
       iconTheme: const IconThemeData(
-          color: kIsWeb ? Color(0xff373E40) : Color(0xffF2F8F8)),
+          color: kIsWeb ? AppColors.whiteColor : Color(0xffF2F8F8)),
       centerTitle: false,
       title: MediaQuery.of(context).size.width < 600
           ? const Text("Préstamo de Libros",
               style: TextStyle(color: Color(0XFFF2F8F8)))
           : const NavOptions(),
 
-      backgroundColor: (kIsWeb) ? Colors.transparent : const Color(0XFF305252),
       actions: (MediaQuery.of(context).size.width >= 600)
           ? [
               TextButton(
@@ -41,7 +42,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   child: const Text(
                     "Cerrar Sesión",
-                    style: TextStyle(color: Colors.black54),
+                    style: TextStyle(color: AppColors.whiteColor),
                   ))
             ]
           : [],
