@@ -41,19 +41,24 @@ class _LoanScreenState extends State<LoanScreen> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double inputFontSize = screenSize.width > 600 ? 16 : 12;
-    final double buttonFontSize = screenSize.width > 600 ? 18 : 14;
-    final double horizontalPadding = screenSize.width > 600 ? 400 : 16;
-    //final double verticalPadding = screenSize.width > 600 ? 32 : 8;
+    final bool isDesktop = screenSize.width > 600;
+
+    final double contentWidth =
+        isDesktop ? screenSize.width * 0.6 : screenSize.width;
+
+    final double buttonFontSize = isDesktop ? 18 : 14;
+    final double horizontalPadding = isDesktop ? contentWidth * 0.35 : 16;
 
     return CustomScaffold(
       title: 'Nuevo Préstamo',
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 12),
               Text(
                 'Estudiante',
                 style: TextStyle(
@@ -218,6 +223,7 @@ class _LoanScreenState extends State<LoanScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 24.0),
             ],
           ),
         ),

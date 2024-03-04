@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/utils/colors.dart';
-import 'package:intl/intl.dart';
+import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 
-class BookScreen extends StatefulWidget {
-  const BookScreen({Key? key}) : super(key: key);
+class StockScreen extends StatefulWidget {
+  const StockScreen({Key? key}) : super(key: key);
 
   @override
-  State<BookScreen> createState() => _BookScreenState();
+  State<StockScreen> createState() => _StockScreenState();
 }
 
-class _BookScreenState extends State<BookScreen> {
+class _StockScreenState extends State<StockScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _editorialController = TextEditingController();
-  final _dateController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  String _selectedBook = 'Hábitos atómicos';
+  String _selectedStand = '1';
+
+  final List<String> _books = [
+    'El sutil arte de que te importe un carajo',
+    'Hábitos atómicos',
+    'Make time',
+  ];
+
+  final List<String> _stands =
+      List.generate(10, (index) => (index + 1).toString());
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _editorialController.dispose();
-    _dateController.dispose();
+    _quantityController.dispose();
     super.dispose();
   }
 
@@ -36,7 +42,7 @@ class _BookScreenState extends State<BookScreen> {
     final double horizontalPadding = isDesktop ? contentWidth * 0.35 : 16;
 
     return CustomScaffold(
-      title: 'Registrar Libro',
+      title: 'Nuevo Stock',
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Form(
@@ -46,54 +52,84 @@ class _BookScreenState extends State<BookScreen> {
             children: [
               const SizedBox(height: 12),
               const Text(
-                'Título Libro',
+                'Cantidad',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               TextFormField(
-                controller: _nameController,
+                controller: _quantityController,
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingresa el nombre del libro';
+                    return 'Por favor, introduce una cantidad';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: horizontalPadding),
-                ),
               ),
               const SizedBox(height: 16.0),
               const Text(
-                'Autor',
+                'Nombre Libro',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
-              TextFormField(
-                controller: _editorialController,
+              DropdownButtonFormField<String>(
+                value: _selectedBook,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedBook = value!;
+                  });
+                },
+                items: _books.map((book) {
+                  return DropdownMenuItem<String>(
+                    value: book,
+                    child: Text(book),
+                  );
+                }).toList(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingrese el autor del libro';
+                    return 'Por favor, selecciona un libro';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: horizontalPadding),
+              ),
+              const SizedBox(height: 16.0),
+              const Text(
+                'Stand ID',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
+              ),
+              DropdownButtonFormField<String>(
+                value: _selectedStand,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedStand = value!;
+                  });
+                },
+                items: _stands.map((stand) {
+                  return DropdownMenuItem<String>(
+                    value: stand,
+                    child: Text('Stand $stand'),
+                  );
+                }).toList(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, selecciona un Stand ID';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16.0),
               Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Lógica para registrar el libro
+                      // Aquí puedes manejar la lógica para guardar el stock
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.whiteColor,
@@ -106,7 +142,7 @@ class _BookScreenState extends State<BookScreen> {
                       height: 52,
                       child: Center(
                         child: Text(
-                          'REGISTRAR LIBRO',
+                          'REGISTRAR STOCK',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: buttonFontSize,
@@ -131,7 +167,7 @@ class _BookScreenState extends State<BookScreen> {
                       height: 52,
                       child: Center(
                         child: Text(
-                          'VER LIBROS',
+                          'VER STOCK',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: buttonFontSize,

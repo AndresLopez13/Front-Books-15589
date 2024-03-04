@@ -2,7 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/book_screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
-import 'package:frontbooks/presentation/screens/view_loans.dart';
+import 'package:frontbooks/presentation/screens/stock_screen.dart';
+import 'package:frontbooks/presentation/screens/view_loans_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 class NavOptions extends StatelessWidget {
@@ -70,6 +71,33 @@ class NavOptions extends StatelessWidget {
               SizedBox(width: 10),
               Text(
                 "Préstamos",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: AppColors.whiteColor),
+              ), // Cambia el color del texto según tu preferencia
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const StockScreen(),
+              ),
+            );
+          },
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.transparent),
+          ),
+          child: const Row(
+            children: [
+              Icon(Icons.inventory,
+                  color: AppColors
+                      .whiteColor), // Cambia el color del icono según tu preferencia
+              SizedBox(width: 10),
+              Text(
+                "Stock",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: AppColors.whiteColor),
               ), // Cambia el color del texto según tu preferencia

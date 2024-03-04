@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/book_screen.dart';
 import 'package:frontbooks/presentation/screens/loan_screen.dart';
 import 'package:frontbooks/presentation/screens/log_in_screen.dart';
-import 'package:frontbooks/presentation/screens/view_loans.dart';
+import 'package:frontbooks/presentation/screens/stock_screen.dart';
+import 'package:frontbooks/presentation/screens/view_loans_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
 
-class CustomDrawer extends StatelessWidget { //SIDEBAR
+class CustomDrawer extends StatelessWidget {
+  //SIDEBAR
   const CustomDrawer({
     super.key,
   });
@@ -37,7 +39,7 @@ class OptionsDrawer extends StatelessWidget {
             'Menú Principal Libros',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
         ),
@@ -45,13 +47,13 @@ class OptionsDrawer extends StatelessWidget {
           title: const Row(
             children: [
               Icon(Icons.library_books,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors
+                      .blackColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text("Libros",
                   style: TextStyle(
-                      color: Colors
-                          .black54)), // Cambia el color del texto según tu preferencia
+                      color: AppColors
+                          .blackColor)), // Cambia el color del texto según tu preferencia
             ],
           ),
           onTap: () {
@@ -67,13 +69,11 @@ class OptionsDrawer extends StatelessWidget {
           title: const Row(
             children: [
               Icon(Icons.account_balance,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors.blackColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text("Prestamo",
                   style: TextStyle(
-                      color: Colors
-                          .black54)), // Cambia el color del texto según tu preferencia
+                      color: AppColors.blackColor)), // Cambia el color del texto según tu preferencia
             ],
           ),
           onTap: () {
@@ -89,13 +89,31 @@ class OptionsDrawer extends StatelessWidget {
           title: const Row(
             children: [
               Icon(Icons.history,
-                  color: Colors
-                      .black54), // Cambia el color del icono según tu preferencia
+                  color: AppColors.blackColor), // Cambia el color del icono según tu preferencia
+              SizedBox(width: 10),
+              Text("Stock",
+                  style: TextStyle(
+                      color: AppColors.blackColor)), // Cambia el color del texto según tu preferencia
+            ],
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const StockScreen(),
+              ),
+            );
+          },
+        ),
+        ListTile(
+          title: const Row(
+            children: [
+              Icon(Icons.history,
+                  color: AppColors.blackColor), // Cambia el color del icono según tu preferencia
               SizedBox(width: 10),
               Text("Historial Préstamos",
                   style: TextStyle(
-                      color: Colors
-                          .black54)), // Cambia el color del texto según tu preferencia
+                      color: AppColors.blackColor)), // Cambia el color del texto según tu preferencia
             ],
           ),
           onTap: () {

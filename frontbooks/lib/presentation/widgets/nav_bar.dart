@@ -22,10 +22,10 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: false,
       title: MediaQuery.of(context).size.width < 600
           ? const Text("Préstamo de Libros",
-              style: TextStyle(color: Color(0XFFF2F8F8)))
+              style: TextStyle(color: AppColors.whiteColor))
           : const NavOptions(),
 
-      actions: (MediaQuery.of(context).size.width >= 600)
+      actions: (MediaQuery.of(context).size.width >= 700)
           ? [
               TextButton(
                   onPressed: () {
