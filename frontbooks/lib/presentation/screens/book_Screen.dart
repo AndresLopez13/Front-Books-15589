@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
+import 'package:frontbooks/presentation/screens/view_books_screen.dart'; // Asegúrate de que la ruta de importación sea correcta
 import 'package:frontbooks/utils/colors.dart';
 import 'package:intl/intl.dart';
 
@@ -118,7 +119,13 @@ class _BookScreenState extends State<BookScreen> {
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      // Aquí puedes manejar la lógica para guardar el stock
+                     // Abre la pantalla de vista de libros
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewBooksScreen(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.whiteColor,
