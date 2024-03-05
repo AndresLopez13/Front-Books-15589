@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/log_in_screen.dart';
+import 'package:frontbooks/presentation/screens/view_loans_screen.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 void main() {
@@ -12,24 +13,20 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Books',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
-        useMaterial3: true,
-      ),
-      home: FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 2)),
-        builder: (context, snapshot) {
-          // Si el Future ha terminado (completado), muestra la pantalla de bienvenida
-          if (snapshot.connectionState == ConnectionState.done) {
-            return const LogInScreen();
-          }
-          // Mientras se carga el Future, muestra el splash screen
-          return const SplashScreen();
-        },
-      ),
-    );
+        title: 'Plague detect Roses',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: Brightness.light,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.light,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => ViewLoansScreen(),
+          '/login': (context) => const LogInScreen(),
+          '/home': (context) => ViewLoansScreen(),
+        });
   }
 }
 

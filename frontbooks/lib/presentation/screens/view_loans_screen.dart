@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/config/API/token_manager.dart';
 import 'package:frontbooks/presentation/screens/loan_details_screen.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/utils/colors.dart';
@@ -19,8 +20,16 @@ class _ViewLoansScreenState extends State<ViewLoansScreen> {
   @override
   void initState() {
     super.initState();
-    filteredLoans =
-        loans; // Inicializa la lista de préstamos filtrados con todos los préstamos al inicio
+    _checkAuthStatus();
+    filteredLoans = loans;
+  }
+
+  Future<void> _checkAuthStatus() async {
+    final token = await TokenManager.getToken();
+    if (token == null) {
+      // El usuario no está autenticado, redirigir a la página de inicio de sesión
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   @override
