@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
+import 'package:frontbooks/presentation/screens/view_stocks_screen.dart'; // Importa la pantalla ViewStocksScreen
 
 class StockScreen extends StatefulWidget {
   const StockScreen({Key? key}) : super(key: key);
@@ -154,7 +155,12 @@ class _StockScreenState extends State<StockScreen> {
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      // Aquí puedes manejar la lógica para guardar el stock
+                     Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewStocksScreen(), // Abrir ViewStocksScreen
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.whiteColor,
