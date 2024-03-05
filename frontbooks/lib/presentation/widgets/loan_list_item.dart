@@ -2,33 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/loan_details_screen.dart';
 
 class LoanListItem extends StatelessWidget {
-  final String studentName;
-  final String bookName;
-  final String loanDate;
-  final String returnDate;
+  final Map<String, String> loan;
 
   const LoanListItem({
-    Key? key, // Agrega el parámetro de key
-    required this.studentName,
-    required this.bookName,
-    required this.loanDate,
-    required this.returnDate,
-  }) : super(key: key); // Llama al constructor super y pasa la key
+    Key? key,
+    required this.loan,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String studentName = loan['studentName']!;
+    final String bookName = loan['bookName']!;
+    final String loanDate = loan['loanDate']!;
+    final String returnDate = loan['returnDate']!;
+
     return Card(
       child: InkWell(
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LoanDetailsScreen(
-                studentName: studentName,
-                bookName: bookName,
-                loanDate: loanDate,
-                returnDate: returnDate,
-              ),
+              builder: (context) => LoanDetailsScreen(loan: loan),
             ),
           );
         },
@@ -44,11 +38,11 @@ class LoanListItem extends StatelessWidget {
               const SizedBox(
                 height: 6.0,
               ),
-              Text('Fecha Préstamo: ${loanDate.toString()}'),
+              Text('Fecha Préstamo: $loanDate'),
               const SizedBox(
                 height: 6.0,
               ),
-              Text('Fecha Devolucion: ${returnDate.toString()}'),
+              Text('Fecha Devolución: $returnDate'),
             ],
           ),
         ),

@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 class LoanDetailsScreen extends StatelessWidget {
-  final String studentName;
-  final String bookName;
-  final String loanDate;
-  final String returnDate;
+  final Map<String, String> loan;
 
   const LoanDetailsScreen({
     Key? key,
-    required this.studentName,
-    required this.bookName,
-    required this.loanDate,
-    required this.returnDate,
+    required this.loan,
   }) : super(key: key);
 
   @override
@@ -37,53 +31,31 @@ class LoanDetailsScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 12),
             TextFormField(
-              //controller: studentNameController,
+              initialValue: loan['studentName'],
+              readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Estudiante',
               ),
             ),
             TextFormField(
-              //controller: bookNameController,
+              initialValue: loan['bookName'],
+              readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Libro',
               ),
             ),
             TextFormField(
-              //controller: loanDateController,
-              onTap: () async {
-                final pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
-                  //loanDateController.text = pickedDate.toString();
-                }
-              },
+              initialValue: loan['loanDate'],
               readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Fecha Préstamo',
-                suffixIcon: Icon(Icons.calendar_today),
               ),
             ),
             TextFormField(
-              //controller: returnDateController,
-              onTap: () async {
-                final pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
-                  //returnDateController.text = pickedDate.toString();
-                }
-              },
+              initialValue: loan['returnDate'],
               readOnly: true,
               decoration: const InputDecoration(
                 labelText: 'Fecha Devolución',
-                suffixIcon: Icon(Icons.calendar_today),
               ),
             ),
             const SizedBox(height: 16.0),
@@ -92,12 +64,7 @@ class LoanDetailsScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const LoanScreen(),
-                    //   ),
-                    // );
+                    // Lógica para actualizar el préstamo
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: AppColors.whiteColor,
@@ -121,12 +88,7 @@ class LoanDetailsScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const LoanScreen(),
-                    //   ),
-                    // );
+                    // Lógica para eliminar el préstamo
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: AppColors.whiteColor,

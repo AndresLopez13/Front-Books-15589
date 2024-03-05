@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/presentation/screens/loan_details_screen.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:frontbooks/presentation/widgets/loan_list_item.dart'; // Importa el archivo de tu LoanListItem
@@ -13,11 +14,13 @@ class ViewLoansScreen extends StatefulWidget {
 class _ViewLoansScreenState extends State<ViewLoansScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  List<Map<String, String>> filteredLoans = [];
 
   @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    filteredLoans =
+        loans; // Inicializa la lista de préstamos filtrados con todos los préstamos al inicio
   }
 
   @override
@@ -31,64 +34,6 @@ class _ViewLoansScreenState extends State<ViewLoansScreen> {
     final double buttonFontSize = isDesktop ? 18 : 14;
     final double horizontalPadding = isDesktop ? contentWidth * 0.35 : 16;
 
-    // Suponiendo que tienes una lista de préstamos, aquí la estoy simulando con datos de ejemplo
-    List<Widget> loanItems = [
-      const LoanListItem(
-        studentName: 'John Doe',
-        bookName: 'Flutter for Beginners',
-        loanDate: '29/02/2024',
-        returnDate: '03/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Jane Smith',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Smith Perez',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'John Doe',
-        bookName: 'Flutter for Beginners',
-        loanDate: '29/02/2024',
-        returnDate: '03/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Jane Smith',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Smith Perez',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'John Doe',
-        bookName: 'Flutter for Beginners',
-        loanDate: '29/02/2024',
-        returnDate: '03/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Jane Smith',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-      const LoanListItem(
-        studentName: 'Smith Perez',
-        bookName: 'Dart Programming',
-        loanDate: '29/02/2024',
-        returnDate: '04/03/2024',
-      ),
-    ];
-
     return CustomScaffold(
       title: 'Historial Préstamos',
       body: SingleChildScrollView(
@@ -101,30 +46,42 @@ class _ViewLoansScreenState extends State<ViewLoansScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  controller: _nameController,
                   decoration: const InputDecoration(
                     hintText: 'Buscar por nombre de estudiante',
                     border: OutlineInputBorder(),
                   ),
                   onChanged: (value) {
-                    // Filtrar los items de la lista según el valor
-                    // setState(() {
-                    //   loanItems = loanItems
-                    //       .where((item) => item.studentName
-                    //           .toLowerCase()
-                    //           .contains(value.toLowerCase()))
-                    //       .toList();
-                    // });
+                    setState(() {
+                      filteredLoans = loans
+                          .where((loan) => loan['studentName']!
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
+                          .toList();
+                    });
                   },
                 ),
                 const SizedBox(height: 15),
                 ListView.separated(
                   shrinkWrap: true,
-                  itemCount: loanItems.length,
+                  itemCount: filteredLoans.length,
                   separatorBuilder: (context, index) {
                     return const SizedBox(height: 4);
                   },
                   itemBuilder: (context, index) {
-                    return loanItems[index];
+                    final loan = filteredLoans[index];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoanDetailsScreen(loan: loan),
+                          ),
+                        );
+                      },
+                      child: LoanListItem(
+                          loan: loan), // Paso el mapa loan como argumento
+                    );
                   },
                 ),
               ],
@@ -135,3 +92,61 @@ class _ViewLoansScreenState extends State<ViewLoansScreen> {
     );
   }
 }
+
+// Lista de préstamos de ejemplo (reemplazar con tu propia lista de préstamos)
+final List<Map<String, String>> loans = [
+  {
+    'studentName': 'John Doe',
+    'bookName': 'Flutter for Beginners',
+    'loanDate': '29/02/2024',
+    'returnDate': '03/03/2024'
+  },
+  {
+    'studentName': 'Jane Smith',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+  {
+    'studentName': 'Smith Perez',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+  {
+    'studentName': 'John Doe',
+    'bookName': 'Flutter for Beginners',
+    'loanDate': '29/02/2024',
+    'returnDate': '03/03/2024'
+  },
+  {
+    'studentName': 'Jane Smith',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+  {
+    'studentName': 'Smith Perez',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+  {
+    'studentName': 'John Doe',
+    'bookName': 'Flutter for Beginners',
+    'loanDate': '29/02/2024',
+    'returnDate': '03/03/2024'
+  },
+  {
+    'studentName': 'Jane Smith',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+  {
+    'studentName': 'Smith Perez',
+    'bookName': 'Dart Programming',
+    'loanDate': '29/02/2024',
+    'returnDate': '04/03/2024'
+  },
+];
