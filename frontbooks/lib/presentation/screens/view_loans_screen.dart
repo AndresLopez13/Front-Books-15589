@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/config/API/token_manager.dart';
 import 'package:frontbooks/presentation/screens/loan_details_screen.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
-import 'package:frontbooks/utils/colors.dart';
 import 'package:frontbooks/presentation/widgets/loan_list_item.dart'; // Importa el archivo de tu LoanListItem
 
 class ViewLoansScreen extends StatefulWidget {
@@ -40,7 +39,6 @@ class _ViewLoansScreenState extends State<ViewLoansScreen> {
     final double contentWidth =
         isDesktop ? screenSize.width * 0.6 : screenSize.width;
 
-    final double buttonFontSize = isDesktop ? 18 : 14;
     final double horizontalPadding = isDesktop ? contentWidth * 0.35 : 16;
 
     return CustomScaffold(

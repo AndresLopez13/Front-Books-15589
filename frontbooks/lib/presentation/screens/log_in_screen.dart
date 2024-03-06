@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:frontbooks/config/API/endpoints_api.dart';
+import 'package:frontbooks/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
@@ -207,6 +208,10 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final bool isDesktop = screenSize.width > 600;
+    final double buttonFontSize = isDesktop ? 18 : 14;
+
     return Theme(
       data: ThemeData(
         hintColor: const Color(0xFFA53F2B),
@@ -273,10 +278,28 @@ class _LoginFormState extends State<LoginForm> {
                 child: SizedBox(
                   width:
                       !kIsWeb ? MediaQuery.of(context).size.width * 0.75 : 350,
-                  child: FilledButton(
-                      onPressed: () => _handleLogin(context),
-                      child: const Text('Iniciar Sesión',
-                          style: TextStyle(color: Colors.white))),
+                  child: ElevatedButton(
+                    onPressed: () => _handleLogin(context),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: AppColors.whiteColor,
+                      backgroundColor: AppColors.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    child: SizedBox(
+                      height: 52,
+                      child: Center(
+                        child: Text(
+                          'INICIAR SESIÓN',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: buttonFontSize,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],
