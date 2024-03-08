@@ -11,8 +11,8 @@ class LoanListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String studentName = loan['studentName']!;
-    final String bookName = loan['bookName']!;
+    final String studentId = loan['studentId']!; // Cambio aquí
+    final String bookId = loan['bookId']!; // Cambio aquí
     final String loanDate = loan['loanDate']!;
     final String returnDate = loan['returnDate']!;
 
@@ -28,13 +28,13 @@ class LoanListItem extends StatelessWidget {
         },
         child: ListTile(
           title: Text(
-            studentName,
+            'ID Estudiante: $studentId', // Cambio aquí
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Libro: $bookName'),
+              Text('ID Libro: $bookId'), // Cambio aquí
               const SizedBox(
                 height: 6.0,
               ),

@@ -113,47 +113,5 @@ final List<Map<String, String>> loans = [
     'bookName': 'Dart Programming',
     'loanDate': '29/02/2024',
     'returnDate': '04/03/2024'
-  },
-  {
-    'studentName': 'Smith Perez',
-    'bookName': 'Dart Programming',
-    'loanDate': '29/02/2024',
-    'returnDate': '04/03/2024'
-  },
-  {
-    'studentName': 'John Doe',
-    'bookName': 'Flutter for Beginners',
-    'loanDate': '29/02/2024',
-    'returnDate': '03/03/2024'
-  },
-  {
-    'studentName': 'Jane Smith',
-    'bookName': 'Dart Programming',
-    'loanDate': '29/02/2024',
-    'returnDate': '04/03/2024'
-  },
-  {
-    'studentName': 'Smith Perez',
-    'bookName': 'Dart Programming',
-    'loanDate': '29/02/2024',
-    'returnDate': '04/03/2024'
-  },
-  {
-    'studentName': 'John Doe',
-    'bookName': 'Flutter for Beginners',
-    'loanDate': '29/02/2024',
-    'returnDate': '03/03/2024'
-  },
-  {
-    'studentName': 'Jane Smith',
-    'bookName': 'Dart Programming',
-    'loanDate': '29/02/2024',
-    'returnDate': '04/03/2024'
-  },
-  {
-    'studentName': 'Smith Perez',
-    'bookName': 'Dart Programming',
-    'loanDate': '29/02/2024',
-    'returnDate': '04/03/2024'
-  },
+  }
 ];

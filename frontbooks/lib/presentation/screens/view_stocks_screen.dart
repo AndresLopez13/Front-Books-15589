@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/presentation/widgets/loan_stocks_item.dart';
+import 'package:frontbooks/config/API/endpoints_api.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ViewStocksScreen extends StatefulWidget {
   const ViewStocksScreen({Key? key}) : super(key: key);
@@ -11,12 +14,29 @@ class ViewStocksScreen extends StatefulWidget {
 
 class _ViewStocksScreenState extends State<ViewStocksScreen> {
   final _searchController = TextEditingController();
-  List<Map<String, String>> filteredStocks = [];
+  List<Map<String, dynamic>> stocks = [];
 
   @override
   void initState() {
     super.initState();
-    filteredStocks = stocks; // Inicializa la lista de stocks filtrados con todos los stocks al inicio
+    fetchStockDataFromEndpoint(); // Llama a la función para obtener los datos de la API al inicio
+  }
+
+  Future<void> fetchStockDataFromEndpoint() async {
+    try {
+      final response = await http.get(Uri.parse(Endpoints.stocks));
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = jsonDecode(response.body);
+        setState(() {
+          stocks =
+              responseData.map((data) => data as Map<String, dynamic>).toList();
+        });
+      } else {
+        print('Error al obtener los datos: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error al obtener los datos: $error');
+    }
   }
 
   @override
@@ -47,28 +67,24 @@ class _ViewStocksScreenState extends State<ViewStocksScreen> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    filteredStocks = stocks
-                        .where((stock) =>
-                            stock['bookName']!
-                                .toLowerCase()
-                                .contains(value.toLowerCase()) ||
-                            stock['standId']!
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                        .toList();
+                    // Filtra los stocks basados en el nombre del libro o el ID del estante
+                    stocks = stocks.where((stock) =>
+                      stock['bookName'].toLowerCase().contains(value.toLowerCase()) ||
+                      stock['standId'].toLowerCase().contains(value.toLowerCase())
+                    ).toList();
                   });
                 },
               ),
               SizedBox(height: 15),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: filteredStocks.length,
+                itemCount: stocks.length,
                 itemBuilder: (context, index) {
-                  final stock = filteredStocks[index];
+                  final stock = stocks[index];
                   return LoanStocksItem(
-                    quantity: stock['quantity']!,
-                    bookName: stock['bookName']!,
-                    standId: stock['standId']!,
+                    quantity: stock['quantity'].toString(),
+                    bookName: stock['book_id'].toString(), // Cambio aquí
+                    standId: stock['stand_id'].toString(), // Cambio aquí
                   );
                 },
               ),

@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:frontbooks/config/API/endpoints_api.dart';
 import 'package:frontbooks/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+// Función para enviar los datos al endpoint
+Future<void> sendLoanDataToEndpoint({
+  required int studentId,
+  required int bookId,
+  required String loanDate,
+  required String returnDate,
+}) async {
+  // Construye el cuerpo de la solicitud en formato JSON
+  final Map<String, dynamic> requestData = {
+    'student_id': studentId,
+    'book_id': bookId,
+    'loan_date': loanDate,
+    'return_date': returnDate,
+  };
+
+  // Convierte el mapa en una cadena JSON
+  final String requestBody = jsonEncode(requestData);
+
+  // Realiza la solicitud HTTP POST
+  final response = await http.post(
+    Uri.parse(Endpoints.lending),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: requestBody,
+  );
+
+  // Verifica el estado de la respuesta
+  if (response.statusCode == 200) {
+    print('Datos enviados correctamente');
+  } else {
+    print('Error al enviar los datos: ${response.statusCode}');
+  }
+}
 
 class LoanScreen extends StatefulWidget {
   const LoanScreen({Key? key}) : super(key: key);
@@ -15,8 +53,8 @@ class _LoanScreenState extends State<LoanScreen> {
   final _startDateController = TextEditingController();
   final _endDateController = TextEditingController();
 
-  String _selectedStudent = 'Ismael Cedillo';
-  String _selectedBook = 'Habitos atómicos';
+  String _studentId = '';
+  String _bookId = '';
 
   final List<String> _students = [
     'Ismael Cedillo',
@@ -60,56 +98,40 @@ class _LoanScreenState extends State<LoanScreen> {
             children: [
               const SizedBox(height: 12),
               Text(
-                'Estudiante',
+                'Estudiante ID', // Cambiar texto a "Estudiante ID"
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: inputFontSize,
                 ),
               ),
-              DropdownButtonFormField<String>(
-                value: _selectedStudent,
+              TextFormField(
+                keyboardType: TextInputType.number, // Teclado numérico
                 onChanged: (value) {
-                  setState(() {
-                    _selectedStudent = value!;
-                  });
+                  _studentId = value; // Capturar el valor del ID del estudiante
                 },
-                items: _students.map((student) {
-                  return DropdownMenuItem<String>(
-                    value: student,
-                    child: Text(student),
-                  );
-                }).toList(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, selecciona un estudiante';
+                    return 'Por favor, ingresa el ID del estudiante';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16.0),
               const Text(
-                'Libro',
+                'Libro ID', // Cambiar texto a "Libro ID"
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              DropdownButtonFormField<String>(
-                value: _selectedBook,
+              TextFormField(
+                keyboardType: TextInputType.number, // Teclado numérico
                 onChanged: (value) {
-                  setState(() {
-                    _selectedBook = value!;
-                  });
+                  _bookId = value; // Capturar el valor del ID del libro
                 },
-                items: _books.map((book) {
-                  return DropdownMenuItem<String>(
-                    value: book,
-                    child: Text(book),
-                  );
-                }).toList(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, selecciona un libro';
+                    return 'Por favor, ingresa el ID del libro';
                   }
                   return null;
                 },
@@ -196,12 +218,20 @@ class _LoanScreenState extends State<LoanScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const LoanScreen(),
-                  //   ),
-                  // );
+                  // Validar el formulario antes de enviar los datos
+                  if (_formKey.currentState!.validate()) {
+                    // Obtener las fechas seleccionadas del formulario
+                    final loanDate = _startDateController.text;
+                    final returnDate = _endDateController.text;
+
+                    // Enviar los datos al endpoint
+                    sendLoanDataToEndpoint(
+                      studentId: int.parse(_studentId),
+                      bookId: int.parse(_bookId),
+                      loanDate: loanDate,
+                      returnDate: returnDate,
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: AppColors.whiteColor,
