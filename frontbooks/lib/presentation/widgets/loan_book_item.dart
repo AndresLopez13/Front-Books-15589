@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontbooks/presentation/screens/book_details_books.dart';
+import 'package:frontbooks/presentation/screens/book_details_screen.dart';
 
 class LoanBookItem extends StatelessWidget {
   final String bookTitle;

@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
-import 'package:frontbooks/presentation/screens/view_books_screen.dart'; // Asegúrate de que la ruta de importación sea correcta
 import 'package:frontbooks/utils/colors.dart';
-import 'package:intl/intl.dart';
 
-class BookScreen extends StatefulWidget {
-  const BookScreen({Key? key}) : super(key: key);
+class BookDetailsScreen extends StatefulWidget {
+  final String bookTitle;
+  final String bookAuthor;
+
+  const BookDetailsScreen({
+    Key? key,
+    required this.bookTitle,
+    required this.bookAuthor,
+  }) : super(key: key);
 
   @override
-  State<BookScreen> createState() => _BookScreenState();
+  State<BookDetailsScreen> createState() => _BookDetailsScreenState();
 }
 
-class _BookScreenState extends State<BookScreen> {
+class _BookDetailsScreenState extends State<BookDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _editorialController = TextEditingController();
-  final _dateController = TextEditingController();
+  late TextEditingController _titleController;
+  late TextEditingController _authorController;
 
   @override
-  void dispose() {
-    _nameController.dispose();
-    _editorialController.dispose();
-    _dateController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.bookTitle);
+    _authorController = TextEditingController(text: widget.bookAuthor);
   }
 
   @override
@@ -36,8 +38,10 @@ class _BookScreenState extends State<BookScreen> {
     final double buttonFontSize = isDesktop ? 18 : 14;
     final double horizontalPadding = isDesktop ? contentWidth * 0.35 : 16;
 
-    return CustomScaffold(
-      title: 'Registrar Libro',
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detalles del Libro'),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Form(
@@ -47,63 +51,49 @@ class _BookScreenState extends State<BookScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 12),
-              const Text(
-                'Título Libro',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
               TextFormField(
-                controller: _nameController,
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Título del Libro',
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingresa el nombre del libro';
+                    return 'Por favor, ingrese el título del libro';
                   }
                   RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
                   if (specialChars.hasMatch(value)) {
-                    return 'Título del libro no válido';
+                    return 'Nombre del Libro No Válido';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: horizontalPadding),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              const Text(
-                'Autor',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
               ),
               TextFormField(
-                controller: _editorialController,
+                controller: _authorController,
+                decoration: const InputDecoration(
+                  labelText: 'Autor del Libro',
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese el autor del libro';
                   }
                   RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
                   if (specialChars.hasMatch(value)) {
-                    return 'Nombre del autor no válido';
+                    return 'Nombre del Autor No Válido';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: horizontalPadding),
-                ),
               ),
               const SizedBox(height: 16.0),
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Lógica para registrar el libro
+                      if (_formKey.currentState!.validate()) {
+                        // Lógica para editar el libro
+                        String newTitle = _titleController.text;
+                        String newAuthor = _authorController.text;
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.whiteColor,
@@ -116,7 +106,7 @@ class _BookScreenState extends State<BookScreen> {
                       height: 52,
                       child: Center(
                         child: Text(
-                          'REGISTRAR LIBRO',
+                          'ACTUALIZAR',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: buttonFontSize,
@@ -125,20 +115,13 @@ class _BookScreenState extends State<BookScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      // Abre la pantalla de vista de libros
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ViewBooksScreen(),
-                        ),
-                      );
+                      // Lógica para eliminar el libro
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: AppColors.whiteColor,
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: AppColors.redColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
@@ -147,7 +130,7 @@ class _BookScreenState extends State<BookScreen> {
                       height: 52,
                       child: Center(
                         child: Text(
-                          'VER LIBROS',
+                          'ELIMINAR',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: buttonFontSize,
@@ -156,13 +139,20 @@ class _BookScreenState extends State<BookScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24.0),
                 ],
               ),
+              const SizedBox(height: 24.0),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _authorController.dispose();
+    super.dispose();
   }
 }

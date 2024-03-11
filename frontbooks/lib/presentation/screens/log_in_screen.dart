@@ -49,10 +49,8 @@ class LogInScreen extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             if (!kIsWeb || MediaQuery.of(context).size.width <= 600) {
-              // Mobile: Vertical layout
               return VerticalLoginLayout();
             } else {
-              // Desktop: Horizontal layout
               return HorizontalLoginLayout();
             }
           },
@@ -75,7 +73,6 @@ class VerticalLoginLayout extends StatelessWidget {
                   ? Image.asset(
                       "assets/background/book_logo.png",
                       height: MediaQuery.of(context).size.height * 0.4,
-                      // width: MediaQuery.of(context).size.width * 0.65
                     )
                   : Image.network(
                       "assets/background/book_logo.png",
@@ -105,15 +102,9 @@ class HorizontalLoginLayout extends StatelessWidget {
             "assets/background/book_logo.png",
             width: MediaQuery.of(context).size.width * (kIsWeb ? 0.2 : 0.65),
           ),
-          // Image.asset("assets/images/rosa.png",
-          // height: MediaQuery.of(context).size.height*0,
-          // width: MediaQuery.of(context).size.width * 0.65),
           const SizedBox(width: kIsWeb ? 100 : 20),
           const SizedBox(
             height: 250,
-            // width: kIsWeb
-            //     ? 400
-            //     : MediaQuery.of(context).size.width*0.75, // Ancho del contenedor para dispositivos de escritorio
             child: Center(child: LoginForm()),
           ),
         ],
@@ -229,80 +220,89 @@ class _LoginFormState extends State<LoginForm> {
           900: Color(0xFF305252),
         }),
       ),
-      child: Form(
-        key: _formKey,
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                child: SizedBox(
-                  width:
-                      !kIsWeb ? MediaQuery.of(context).size.width * 0.75 : 350,
-                  child: TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Usuario',
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingresa el nombre de ususario';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: SizedBox(
-                  width:
-                      !kIsWeb ? MediaQuery.of(context).size.width * 0.75 : 350,
-                  child: TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Contraseña',
-                    ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Por favor, ingresa la contraseña';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: SizedBox(
-                  width:
-                      !kIsWeb ? MediaQuery.of(context).size.width * 0.75 : 350,
-                  child: ElevatedButton(
-                    onPressed: () => _handleLogin(context),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: AppColors.whiteColor,
-                      backgroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child: SizedBox(
+                    width: !kIsWeb
+                        ? MediaQuery.of(context).size.width * 0.75
+                        : 350,
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Usuario',
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingresa el nombre de usuario';
+                        }
+                        if (value.contains('@')) {
+                          return 'El nombre de usuario no puede contener el símbolo "@"';
+                        }
+                        return null;
+                      },
                     ),
-                    child: SizedBox(
-                      height: 52,
-                      child: Center(
-                        child: Text(
-                          'INICIAR SESIÓN',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: buttonFontSize,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: SizedBox(
+                    width: !kIsWeb
+                        ? MediaQuery.of(context).size.width * 0.75
+                        : 350,
+                    child: TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Contraseña',
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, ingresa la contraseña';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Center(
+                  child: SizedBox(
+                    width: !kIsWeb
+                        ? MediaQuery.of(context).size.width * 0.75
+                        : 350,
+                    child: ElevatedButton(
+                      onPressed: () => _handleLogin(context),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: AppColors.whiteColor,
+                        backgroundColor: AppColors.primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: SizedBox(
+                        height: 52,
+                        child: Center(
+                          child: Text(
+                            'INICIAR SESIÓN',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: buttonFontSize,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

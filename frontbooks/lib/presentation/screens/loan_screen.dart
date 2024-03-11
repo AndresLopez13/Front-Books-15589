@@ -93,6 +93,7 @@ class _LoanScreenState extends State<LoanScreen> {
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -113,6 +114,10 @@ class _LoanScreenState extends State<LoanScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingresa el ID del estudiante';
                   }
+                  RegExp numbersOnly = RegExp(r'^[0-9]+$');
+                  if (!numbersOnly.hasMatch(value)) {
+                    return 'Por favor, ingresa solo números';
+                  }
                   return null;
                 },
               ),
@@ -132,6 +137,14 @@ class _LoanScreenState extends State<LoanScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingresa el ID del libro';
+                  }
+                  RegExp numbersOnly = RegExp(r'^[0-9]+$');
+                  if (!numbersOnly.hasMatch(value)) {
+                    return 'Por favor, ingresa solo números';
+                  }
+                  int? number = int.tryParse(value);
+                  if (number == null || number <= 1) {
+                    return 'El número debe ser positivo';
                   }
                   return null;
                 },

@@ -48,6 +48,7 @@ class _StockScreenState extends State<StockScreen> {
         padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,6 +66,14 @@ class _StockScreenState extends State<StockScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, introduce una cantidad';
+                  }
+                  RegExp numbersOnly = RegExp(r'^[0-9]+$');
+                  if (!numbersOnly.hasMatch(value)) {
+                    return 'Por favor, ingresa solo números';
+                  }
+                  int? number = int.tryParse(value);
+                  if (number == null || number <= 1) {
+                    return 'El número debe ser positivo';
                   }
                   return null;
                 },
@@ -94,6 +103,7 @@ class _StockScreenState extends State<StockScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, selecciona un libro';
                   }
+
                   return null;
                 },
               ),
@@ -121,6 +131,14 @@ class _StockScreenState extends State<StockScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, selecciona un Stand ID';
+                  }
+                  RegExp numbersOnly = RegExp(r'^[0-9]+$');
+                  if (!numbersOnly.hasMatch(value)) {
+                    return 'Por favor, ingresa solo números';
+                  }
+                  int? number = int.tryParse(value);
+                  if (number == null || number <= 1) {
+                    return 'El número debe ser positivo';
                   }
                   return null;
                 },
@@ -155,10 +173,11 @@ class _StockScreenState extends State<StockScreen> {
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                     Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewStocksScreen(), // Abrir ViewStocksScreen
+                          builder: (context) =>
+                              ViewStocksScreen(), // Abrir ViewStocksScreen
                         ),
                       );
                     },
