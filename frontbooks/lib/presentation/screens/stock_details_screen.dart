@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/utils/colors.dart';
 
 class StockDetailsScreen extends StatefulWidget {
-  final String quantity;
-  final String bookName;
-  final String standId;
-
+  final int quantity; 
+  final int bookId; 
+  final int standId; 
   const StockDetailsScreen({
     Key? key,
     required this.quantity,
-    required this.bookName,
+    required this.bookId,
     required this.standId,
   }) : super(key: key);
 
@@ -26,9 +25,10 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _quantityController = TextEditingController(text: widget.quantity);
-    _bookNameController = TextEditingController(text: widget.bookName);
-    _standIdController = TextEditingController(text: widget.standId);
+    _quantityController =
+        TextEditingController(text: widget.quantity.toString());
+    _bookNameController = TextEditingController(text: widget.bookId.toString());
+    _standIdController = TextEditingController(text: widget.standId.toString());
   }
 
   @override
@@ -57,6 +57,7 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _quantityController,
+                keyboardType: TextInputType.number, // Cambiado a number
                 decoration: const InputDecoration(
                   labelText: 'Cantidad',
                 ),
@@ -64,9 +65,10 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese la cantidad';
                   }
-                  RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
+                  RegExp specialChars =
+                      RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
                   if (specialChars.hasMatch(value)) {
-                    return 'Cantidad no válida';
+                    return 'ID del Stand No Válido';
                   }
                   return null;
                 },
@@ -74,21 +76,23 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
               TextFormField(
                 controller: _bookNameController,
                 decoration: const InputDecoration(
-                  labelText: 'Nombre del Libro',
+                  labelText: 'ID del Libro',
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, ingrese el nombre del libro';
+                    return 'Por favor, ingrese el ID del libro';
                   }
-                  RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
+                  RegExp specialChars =
+                      RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
                   if (specialChars.hasMatch(value)) {
-                    return 'Nombre del libro no válido';
+                    return 'ID del Stand No Válido';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _standIdController,
+                keyboardType: TextInputType.number, // Cambiado a number
                 decoration: const InputDecoration(
                   labelText: 'ID del Stand',
                 ),
@@ -96,9 +100,10 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese el ID del stand';
                   }
-                  RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
+                  RegExp specialChars =
+                      RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]');
                   if (specialChars.hasMatch(value)) {
-                    return 'ID del stand no válido';
+                    return 'ID del Stand No Válido';
                   }
                   return null;
                 },
@@ -110,9 +115,8 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        String quantity = _quantityController.text;
-                        String bookName = _bookNameController.text;
-                        String standId = _standIdController.text;
+                        int quantity = int.parse(_quantityController.text);
+                        int standId = int.parse(_standIdController.text);
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontbooks/config/API/endpoints_api.dart';
-import 'package:frontbooks/models/loan_stock.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/presentation/widgets/loan_stocks_item.dart';
 import 'package:http/http.dart' as http;
@@ -16,13 +14,54 @@ class ViewStocksScreen extends StatefulWidget {
 
 class _ViewStocksScreenState extends State<ViewStocksScreen> {
   final _searchController = TextEditingController();
-  List<Map<String, String>> filteredStocks = [];
+  List<Map<String, int>> filteredStocks = [];
 
-    @override
+  @override
   void initState() {
     super.initState();
-    filteredStocks =
-        stocks; // Inicializa la lista de stocks filtrados con todos los stocks al inicio
+    fetchStocksFromEndpoint(context);
+  }
+
+  Future<bool> fetchStocksFromEndpoint(BuildContext context) async {
+    try {
+      final response = await http.get(
+        Uri.parse(Endpoints.stocks),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          filteredStocks = data
+              .map<Map<String, int>>((item) => {
+                    'quantity': item['quantity'],
+                    'bookId': item['book_id'],
+                    'standId': item['stand_id']
+                  })
+              .toList();
+        });
+        print('Datos de stocks recibidos correctamente');
+        return true;
+      } else {
+        print('Error al obtener los datos de stocks: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al obtener los datos de stocks'),
+          ),
+        );
+        return false;
+      }
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al obtener los datos de stocks'),
+        ),
+      );
+      return false;
+    }
   }
 
   @override
@@ -53,12 +92,19 @@ class _ViewStocksScreenState extends State<ViewStocksScreen> {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    filteredStocks = stocks
+                    // Filtrar los stocks según el valor ingresado en el campo de búsqueda
+                    filteredStocks = filteredStocks
                         .where((stock) =>
-                            stock['bookName']!
+                            stock['quantity']
+                                .toString()
                                 .toLowerCase()
                                 .contains(value.toLowerCase()) ||
-                            stock['standId']!
+                            stock['bookId']
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase()) ||
+                            stock['standId']
+                                .toString()
                                 .toLowerCase()
                                 .contains(value.toLowerCase()))
                         .toList();
@@ -73,7 +119,7 @@ class _ViewStocksScreenState extends State<ViewStocksScreen> {
                   final stock = filteredStocks[index];
                   return LoanStocksItem(
                     quantity: stock['quantity']!,
-                    bookName: stock['bookName']!,
+                    bookId: stock['bookId']!,
                     standId: stock['standId']!,
                   );
                 },
@@ -85,11 +131,3 @@ class _ViewStocksScreenState extends State<ViewStocksScreen> {
     );
   }
 }
-
-// Lista de stocks de ejemplo (reemplazar con tu propia lista de stocks)
-final List<Map<String, String>> stocks = [
-  {'quantity': '10', 'bookName': 'El nombre del viento', 'standId': '001'},
-  {'quantity': '15', 'bookName': 'Cien años de soledad', 'standId': '002'},
-  {'quantity': '20', 'bookName': '1984', 'standId': '003'},
-  {'quantity': '12', 'bookName': 'El señor de los anillos', 'standId': '004'},
-];

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/stock_details_screen.dart';
 
 class LoanStocksItem extends StatelessWidget {
-  final String quantity;
-  final String bookName;
-  final String standId;
+  final int quantity;
+  final int bookId;
+  final int standId;
 
   const LoanStocksItem({
     Key? key,
     required this.quantity,
-    required this.bookName,
+    required this.bookId,
     required this.standId,
   }) : super(key: key);
 
@@ -23,7 +23,7 @@ class LoanStocksItem extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => StockDetailsScreen(
                 quantity: quantity,
-                bookName: bookName,
+                bookId: bookId,
                 standId: standId,
               ),
             ),
@@ -32,14 +32,14 @@ class LoanStocksItem extends StatelessWidget {
         child: ListTile(
           title: Text(
             'Cantidad: $quantity',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Nombre Libro: $bookName'),
-              SizedBox(height: 6.0),
-              Text('Stand ID: $standId'),
+              Text('ID del libro: $bookId'),
+              const SizedBox(height: 6.0),
+              Text('ID del Stand: $standId'),
             ],
           ),
         ),
