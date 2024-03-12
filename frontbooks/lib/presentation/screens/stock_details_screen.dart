@@ -64,9 +64,9 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, ingrese la cantidad';
                   }
-                  int? number = int.tryParse(value);
-                  if (number == null || number <= 1) {
-                    return 'El número debe ser un número positivo';
+                  RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
+                  if (specialChars.hasMatch(value)) {
+                    return 'Cantidad no válida';
                   }
                   return null;
                 },
@@ -82,14 +82,13 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   }
                   RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
                   if (specialChars.hasMatch(value)) {
-                    return 'Nombre del Libro No Válido';
+                    return 'Nombre del libro no válido';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _standIdController,
-                initialValue: widget.standId,
                 decoration: const InputDecoration(
                   labelText: 'ID del Stand',
                 ),
@@ -99,7 +98,7 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   }
                   RegExp specialChars = RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
                   if (specialChars.hasMatch(value)) {
-                    return 'ID del Stand No Válido';
+                    return 'ID del stand no válido';
                   }
                   return null;
                 },
@@ -111,7 +110,6 @@ class _StockDetailsScreenState extends State<StockDetailsScreen> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Lógica para editar el libro
                         String quantity = _quantityController.text;
                         String bookName = _bookNameController.text;
                         String standId = _standIdController.text;

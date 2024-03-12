@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:frontbooks/config/API/endpoints_api.dart';
+import 'package:frontbooks/models/loan_stock.dart';
 import 'package:frontbooks/presentation/widgets/custom_scaffold.dart';
 import 'package:frontbooks/presentation/widgets/loan_stocks_item.dart';
-import 'package:frontbooks/config/API/endpoints_api.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ViewStocksScreen extends StatefulWidget {
   const ViewStocksScreen({Key? key}) : super(key: key);
@@ -14,29 +16,13 @@ class ViewStocksScreen extends StatefulWidget {
 
 class _ViewStocksScreenState extends State<ViewStocksScreen> {
   final _searchController = TextEditingController();
-  List<Map<String, dynamic>> stocks = [];
+  List<Map<String, String>> filteredStocks = [];
 
-  @override
+    @override
   void initState() {
     super.initState();
-    fetchStockDataFromEndpoint(); // Llama a la función para obtener los datos de la API al inicio
-  }
-
-  Future<void> fetchStockDataFromEndpoint() async {
-    try {
-      final response = await http.get(Uri.parse(Endpoints.stocks));
-      if (response.statusCode == 200) {
-        final List<dynamic> responseData = jsonDecode(response.body);
-        setState(() {
-          stocks =
-              responseData.map((data) => data as Map<String, dynamic>).toList();
-        });
-      } else {
-        print('Error al obtener los datos: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error al obtener los datos: $error');
-    }
+    filteredStocks =
+        stocks; // Inicializa la lista de stocks filtrados con todos los stocks al inicio
   }
 
   @override
@@ -61,30 +47,34 @@ class _ViewStocksScreenState extends State<ViewStocksScreen> {
             children: [
               TextField(
                 controller: _searchController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Buscar por nombre del libro',
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
                   setState(() {
-                    // Filtra los stocks basados en el nombre del libro o el ID del estante
-                    stocks = stocks.where((stock) =>
-                      stock['bookName'].toLowerCase().contains(value.toLowerCase()) ||
-                      stock['standId'].toLowerCase().contains(value.toLowerCase())
-                    ).toList();
+                    filteredStocks = stocks
+                        .where((stock) =>
+                            stock['bookName']!
+                                .toLowerCase()
+                                .contains(value.toLowerCase()) ||
+                            stock['standId']!
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                        .toList();
                   });
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: stocks.length,
+                itemCount: filteredStocks.length,
                 itemBuilder: (context, index) {
-                  final stock = stocks[index];
+                  final stock = filteredStocks[index];
                   return LoanStocksItem(
-                    quantity: stock['quantity'].toString(),
-                    bookName: stock['book_id'].toString(), // Cambio aquí
-                    standId: stock['stand_id'].toString(), // Cambio aquí
+                    quantity: stock['quantity']!,
+                    bookName: stock['bookName']!,
+                    standId: stock['standId']!,
                   );
                 },
               ),

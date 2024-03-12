@@ -7,7 +7,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // Función para enviar los datos al endpoint
-Future<void> sendLoanDataToEndpoint({
+Future<bool> sendLoanDataToEndpoint({
+  required BuildContext context,
   required int studentId,
   required int bookId,
   required String loanDate,
@@ -36,8 +37,20 @@ Future<void> sendLoanDataToEndpoint({
   // Verifica el estado de la respuesta
   if (response.statusCode == 200) {
     print('Datos enviados correctamente');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Préstamo registrado correctamente'),
+      ),
+    );
+    return true;
   } else {
     print('Error al enviar los datos: ${response.statusCode}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Error al registrar el préstamo'),
+      ),
+    );
+    return false;
   }
 }
 
@@ -55,18 +68,6 @@ class _LoanScreenState extends State<LoanScreen> {
 
   String _studentId = '';
   String _bookId = '';
-
-  final List<String> _students = [
-    'Ismael Cedillo',
-    'Andrés López',
-    'Adrian Iza',
-  ];
-
-  final List<String> _books = [
-    'El sutil arte de que te importe un carajo',
-    'Habitos atómicos',
-    'Make time',
-  ];
 
   @override
   void dispose() {
@@ -143,7 +144,7 @@ class _LoanScreenState extends State<LoanScreen> {
                     return 'Por favor, ingresa solo números';
                   }
                   int? number = int.tryParse(value);
-                  if (number == null || number <= 1) {
+                  if (number == null || number < 1) {
                     return 'El número debe ser positivo';
                   }
                   return null;
@@ -230,19 +231,38 @@ class _LoanScreenState extends State<LoanScreen> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  // Validar el formulario antes de enviar los datos
-                  if (_formKey.currentState!.validate()) {
-                    // Obtener las fechas seleccionadas del formulario
-                    final loanDate = _startDateController.text;
-                    final returnDate = _endDateController.text;
+                onPressed: () async {
+                  final loanDate = _startDateController.text;
+                  final returnDate = _endDateController.text;
 
-                    // Enviar los datos al endpoint
-                    sendLoanDataToEndpoint(
-                      studentId: int.parse(_studentId),
-                      bookId: int.parse(_bookId),
-                      loanDate: loanDate,
-                      returnDate: returnDate,
+                  // Verificar si los campos de ID están vacíos
+                  if (_studentId.isEmpty || _bookId.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Por favor, ingresa el ID del estudiante y del libro'),
+                      ),
+                    );
+                    return; // Salir de la función si los campos están vacíos
+                  }
+
+                  final success = await sendLoanDataToEndpoint(
+                    context: context,
+                    studentId: int.parse(_studentId),
+                    bookId: int.parse(_bookId),
+                    loanDate: loanDate,
+                    returnDate: returnDate,
+                  );
+
+                  if (success) {
+                    _formKey.currentState!.reset();
+                    _studentId = ''; // Limpiar el ID del estudiante
+                    _bookId = ''; // Limpiar el ID del libro
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Error al registrar el préstamo'),
+                      ),
                     );
                   }
                 },

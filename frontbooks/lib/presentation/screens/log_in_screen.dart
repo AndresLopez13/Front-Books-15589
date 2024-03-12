@@ -245,6 +245,11 @@ class _LoginFormState extends State<LoginForm> {
                         if (value.contains('@')) {
                           return 'El nombre de usuario no puede contener el símbolo "@"';
                         }
+                        RegExp specialChars =
+                            RegExp(r'[<>!@#%^&*(),.?":{}|<>]');
+                        if (specialChars.hasMatch(value)) {
+                          return 'Nombre del Libro No Válido';
+                        }
                         return null;
                       },
                     ),

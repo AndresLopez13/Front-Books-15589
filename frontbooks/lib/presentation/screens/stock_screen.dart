@@ -72,7 +72,7 @@ class _StockScreenState extends State<StockScreen> {
                     return 'Por favor, ingresa solo números';
                   }
                   int? number = int.tryParse(value);
-                  if (number == null || number <= 1) {
+                  if (number == null || number < 1) {
                     return 'El número debe ser positivo';
                   }
                   return null;
@@ -137,7 +137,7 @@ class _StockScreenState extends State<StockScreen> {
                     return 'Por favor, ingresa solo números';
                   }
                   int? number = int.tryParse(value);
-                  if (number == null || number <= 1) {
+                  if (number == null || number < 1) {
                     return 'El número debe ser positivo';
                   }
                   return null;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontbooks/presentation/screens/stock_details_screen.dart';
+
 class LoanStocksItem extends StatelessWidget {
   final String quantity;
   final String bookName;
